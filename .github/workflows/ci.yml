@@ -1,0 +1,14 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: ["github-actions-demo"]
+  pull_request:
+    branches: ["github-actions-demo"]
+
+jobs:
+  papoi:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Greeting
+        run: echo "Hello, World!"

@@ -6,6 +6,22 @@ Docker Host
 - RAM: 16GB
 - Disk: 300GB
 
+## No Sleep
+
+```sh
+sudo nano /etc/systemd/logind.conf
+```
+
+```conf
+HandleLidSwitch=ignore
+HandleLidSwitchExternalPower=ignore
+LidSwitchIgnoreInhibited=no
+```
+
+```sh
+sudo service systemd-logind restart
+```
+
 ## Static IP Configuration
 
 Edit the existing Netplan file

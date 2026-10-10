@@ -6,6 +6,16 @@ Docker Host
 - RAM: 16GB
 - Disk: 300GB
 
+## Docker Context
+
+```
+docker context create remote-docker --docker "host=ssh://tuanta7@192.168.1.37"
+ssh-keygen -t ed25519 
+ssh-copy-id tuanta7@192.168.1.37  
+
+docker ps
+```
+
 ## No Sleep
 
 ```sh

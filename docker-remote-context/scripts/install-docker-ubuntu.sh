@@ -24,7 +24,14 @@ EOF
 sudo apt update
 sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
-# Start Docker now, enable it at boot, and verify the installation.
+# Start Docker now, enable it at boot, and 
 sudo systemctl enable --now docker
 sudo systemctl is-active --quiet docker
-sudo docker run --rm hello-world
+
+# Add current user to the docker group
+sudo groupadd docker
+sudo usermod -aG docker $USER
+newgrp docker
+
+# Verify the installation
+docker run --rm hello-world

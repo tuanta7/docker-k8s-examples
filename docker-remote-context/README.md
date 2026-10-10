@@ -69,19 +69,3 @@ ip -4 address show wlo1
 ping -c 3 192.168.1.1
 resolvectl query ubuntu.com
 ```
-
-## Enable SSH Server
-
-Run this command on the Ubuntu machine to install the SSH server, start it, and enable it at boot:
-
-```sh
-make start-ssh-server
-```
-
-If UFW is active, allow SSH with `sudo ufw allow OpenSSH`.
-Find the machine's LAN IP address with `hostname -I`, then connect from another
-computer using an existing account on the Ubuntu machine:
-
-```sh
-ssh <username>@<machine-ip>
-```

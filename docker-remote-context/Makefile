@@ -1,4 +1,4 @@
-.PHONY: install-docker-ubuntu start-docker-ubuntu stop-docker-ubuntu status-docker-ubuntu start-ssh-server start-nginx
+.PHONY: dev
 
 # https://docs.docker.com/engine/install/ubuntu/
 install-docker-ubuntu:
@@ -22,3 +22,14 @@ start-nginx:
 	sudo apt update
 	sudo apt install -y nginx libnginx-mod-stream 
 	sudo systemctl start nginx
+
+reload-nginx:
+	sudo install -m 644 config/nginx/dev.nginx.conf /etc/nginx/modules-enabled/99-dev-infra.conf
+	sudo nginx -t
+	sudo systemctl reload nginx
+
+start-dev-infra: 
+	sudo bash scripts/prepare-dev-storage.sh
+	docker compose -f config/compose/docker-compose.dev.yaml up -d
+
+dev: start-dev-infra start-nginx reload-nginx

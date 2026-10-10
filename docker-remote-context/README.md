@@ -8,7 +8,7 @@ Docker Host
 
 ## Docker Context
 
-```
+```sh
 docker context create remote-docker --docker "host=ssh://tuanta7@192.168.1.37"
 ssh-keygen -t ed25519 
 ssh-copy-id tuanta7@192.168.1.37  

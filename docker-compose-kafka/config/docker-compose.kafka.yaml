@@ -4,8 +4,8 @@ services:
     image: apache/kafka:latest
     container_name: kafka
     ports:
-      - "9092:9092" # Broker port
-      - "9093:9093" # KRaft controller port
+      - "127.0.0.1:19092:9092" # Broker backend for Nginx
+      - "127.0.0.1:19093:9093" # KRaft controller backend for Nginx
     environment:
       # Unique identifier for this Kafka node in the cluster
       KAFKA_NODE_ID: 1
@@ -43,7 +43,7 @@ services:
     image: ghcr.io/kafbat/kafka-ui:db7cc80
     container_name: kafbat-ui
     ports:
-      - "13700:8080"
+      - "127.0.0.1:18080:8080" # Kafka UI backend for Nginx
     environment:
       DYNAMIC_CONFIG_ENABLED: "true"
       KAFKA_CLUSTERS_0_NAME: local

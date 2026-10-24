@@ -32,9 +32,14 @@ install-plugins:
 
 # https://developer.konghq.com/kubernetes-ingress-controller/install/
 install-kong-ingress-controller: install-plugins
-	helm repo add kong https://charts.konghq.com
-	helm repo update
-	helm upgrade --install kong kong/ingress --namespace kong --create-namespace --values ./charts/values.yaml --wait --timeout 5m
+	sudo helm repo add kong https://charts.konghq.com
+	sudo helm repo update
+	sudo helm upgrade --install kong kong/ingress \
+		--kubeconfig /etc/rancher/k3s/k3s.yaml \
+		--namespace kong \
+		--create-namespace \
+		--values ./charts/values.yaml \
+		--wait --timeout 5m
 
 deploy-plugins: install-kong-ingress-controller
 	$(KUBECTL) rollout restart deployment/kong-gateway --namespace kong

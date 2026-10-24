@@ -1,0 +1,8 @@
+# https://developer.konghq.com/kubernetes-ingress-controller/custom-plugins/
+gateway:
+  plugins:
+    configMaps:
+      - name: kong-plugin-hello-world
+        pluginName: hello-world
+      # - name: kong-plugin-introspector
+      #   pluginName: introspector

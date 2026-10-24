@@ -11,5 +11,3 @@ install-k9s:
 # https://kubernetes.io/vi/docs/tasks/tools/install-minikube/
 install-minikube:
 	brew install minikube
-
-

@@ -6,14 +6,9 @@ Docker Host
 - RAM: 16GB
 - Disk: 300GB
 
-## Docker Context
-
 ```sh
-docker context create remote-docker --docker "host=ssh://tuanta7@192.168.1.37"
-ssh-keygen -t ed25519 
-ssh-copy-id tuanta7@192.168.1.37  
-
-docker ps
+ssh tuanta7@192.168.1.x
+git clone https://github.com/tuanta7/docker-k8s-examples
 ```
 
 ## No Sleep
@@ -69,7 +64,7 @@ Press Enter to accept when connectivity works.
 ```sh
 sudo chmod 600 /etc/netplan/00-installer-config.yaml
 sudo netplan generate
-sudo netplan try
+sudo netplan generate
 ```
 
 Check the address and connection
@@ -78,4 +73,14 @@ Check the address and connection
 ip -4 address show wlo1
 ping -c 3 192.168.1.1
 resolvectl query ubuntu.com
+```
+
+## Docker Context
+
+```sh
+docker context create remote-docker --docker "host=ssh://tuanta7@192.168.1.37"
+ssh-keygen -t ed25519
+ssh-copy-id tuanta7@192.168.1.37
+
+docker ps
 ```

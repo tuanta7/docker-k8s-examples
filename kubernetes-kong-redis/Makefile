@@ -25,9 +25,9 @@ install-helm:
 
 # https://developer.konghq.com/kubernetes-ingress-controller/custom-plugins/
 install-plugins:
-	kubectl create namespace kong --dry-run=client -o yaml | kubectl apply -f -
-	kubectl create configmap kong-plugin-hello-world --namespace kong --from-file=plugins/hello-world --dry-run=client -o yaml | kubectl apply -f -
-# 	kubectl create configmap kong-plugin-introspector --namespace kong --from-file=plugins/introspector --dry-run=client -o yaml | kubectl apply -f -
+	sudo k3s kubectl create namespace kong --dry-run=client -o yaml | kubectl apply -f -
+	sudo k3s kubectl create configmap kong-plugin-hello-world --namespace kong --from-file=plugins/hello-world --dry-run=client -o yaml | kubectl apply -f -
+# 	sudo k3s kubectl create configmap kong-plugin-introspector --namespace kong --from-file=plugins/introspector --dry-run=client -o yaml | kubectl apply -f -
 
 # https://developer.konghq.com/kubernetes-ingress-controller/install/
 install-kong-ingress-controller: install-plugins
@@ -36,7 +36,7 @@ install-kong-ingress-controller: install-plugins
 	helm upgrade --install kong kong/ingress --namespace kong --create-namespace --values ./charts/values.yaml --wait --timeout 5m
 
 deploy-plugins: install-kong-ingress-controller
-	kubectl rollout restart deployment/kong-gateway --namespace kong
-	kubectl rollout status deployment/kong-gateway --namespace kong --timeout=300s
-	kubectl apply -f manifests/hello-world.yaml
-# 	kubectl apply -f manifests/introspector.yaml
+	sudo k3s kubectl rollout restart deployment/kong-gateway --namespace kong
+	sudo k3s kubectl rollout status deployment/kong-gateway --namespace kong --timeout=300s
+	sudo k3s kubectl apply -f manifests/hello-world.yaml
+# 	sudo k3s kubectl apply -f manifests/introspector.yaml

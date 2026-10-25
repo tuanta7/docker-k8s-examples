@@ -1,0 +1,47 @@
+services:
+  kong-dbless:
+    container_name: kong-dbless
+    read_only: true
+    build:
+      # docker build can not copy file outside the build context.
+      context: .
+      dockerfile: kong.Dockerfile
+    networks:
+      - kong-net
+    volumes:
+      - ./declarative:/kong/declarative/
+      - ./prefix_volume:/var/run/kong
+      - ./tmp_volume:/tmp
+    environment:
+      KONG_PREFIX: /var/run/kong
+      KONG_DATABASE: off
+      KONG_DECLARATIVE_CONFIG: /kong/declarative/kong.yml
+      KONG_PLUGINS: bundled, introspect, prometheus
+      KONG_STATUS_LISTEN: 0.0.0.0:8100
+      KONG_ADMIN_LISTEN: 0.0.0.0:8001
+      KONG_ADMIN_GUI_URL: http://localhost:8002
+      KONG_PROXY_ACCESS_LOG: /dev/stdout
+      KONG_ADMIN_ACCESS_LOG: /dev/stdout
+      KONG_PROXY_ERROR_LOG: /dev/stderr
+      KONG_ADMIN_ERROR_LOG: /dev/stderr
+      KONG_LOG_LEVEL: debug
+      #KONG_LICENSE_DATA: "${KONG_LICENSE_DATA}" # passed via environment variable
+    ports:
+      - "8000:8000" # Proxy HTTP
+      - "8443:8443" # Proxy HTTPS
+      - "8100:8100" # Status API
+      - "8001:8001" # Admin API HTTP
+      - "8444:8444" # Admin API HTTPS
+      - "8002:8002" # Kong Manager HTTP
+      - "8445:8445" # Kong Manager HTTPS
+  kong-redis:
+    image: redis:latest
+    container_name: kong-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - kong-net
+
+networks:
+  kong-net:
+    driver: bridge

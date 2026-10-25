@@ -25,24 +25,26 @@ install-helm:
 	./get_helm.sh
 
 # https://developer.konghq.com/kubernetes-ingress-controller/custom-plugins/
-install-plugins:
+install-kong-plugins:
 	$(KUBECTL) create namespace kong --dry-run=client -o yaml | $(KUBECTL) apply -f -
 	$(KUBECTL) create configmap kong-plugin-hello-world --namespace kong --from-file=plugins/hello-world --dry-run=client -o yaml | $(KUBECTL) apply -f -
-# 	$(KUBECTL) create configmap kong-plugin-introspector --namespace kong --from-file=plugins/introspector --dry-run=client -o yaml | $(KUBECTL) apply -f -
+	$(KUBECTL) create configmap kong-plugin-introspector --namespace kong --from-file=plugins/introspector --dry-run=client -o yaml | $(KUBECTL) apply -f -
 
 # https://developer.konghq.com/kubernetes-ingress-controller/install/
-install-kong-ingress-controller: install-plugins
+install-kong-ingress-controller: install-kong-plugins
 	sudo helm repo add kong https://charts.konghq.com
 	sudo helm repo update
-	sudo helm upgrade --install kong kong/ingress \
-		--kubeconfig /etc/rancher/k3s/k3s.yaml \
-		--namespace kong \
-		--create-namespace \
+	sudo helm upgrade --install kong kong/ingress --kubeconfig /etc/rancher/k3s/k3s.yaml \
+		--namespace kong --create-namespace \
 		--values ./charts/values.yaml \
 		--wait --timeout 5m
 
-deploy-plugins: install-kong-ingress-controller
+deploy-kong-plugins: install-kong-ingress-controller
 	$(KUBECTL) rollout restart deployment/kong-gateway --namespace kong
 	$(KUBECTL) rollout status deployment/kong-gateway --namespace kong --timeout=300s
 	$(KUBECTL) apply -f manifests/hello-world.yaml
-# 	$(KUBECTL) apply -f manifests/introspector.yaml
+	$(KUBECTL) apply -f manifests/introspector.yaml
+
+# https://docs.aws.amazon.com/eks/latest/userguide/deploy-prometheus.html
+install-prometheus:
+	sudo helm repo update

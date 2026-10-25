@@ -4,5 +4,5 @@ gateway:
     configMaps:
       - name: kong-plugin-hello-world
         pluginName: hello-world
-      # - name: kong-plugin-introspector
-      #   pluginName: introspector
+      - name: kong-plugin-introspector
+        pluginName: introspector

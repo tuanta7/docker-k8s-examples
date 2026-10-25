@@ -1,0 +1,22 @@
+_format_version: "3.0"
+
+plugins:
+  - name: prometheus
+
+services:
+  - name: example-service
+    url: http://httpbin.org
+    routes:
+      - name: plugin-required
+        paths:
+          - /admin
+          - /private
+        plugins:
+          - name: introspect
+            config:
+              jwks_uri: http://host.docker.internal:3000/.well-known/jwks.json
+              redis_host: kong-redis
+              redis_port: 6379
+      - name: anything
+        paths:
+          - /anything

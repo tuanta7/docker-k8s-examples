@@ -1,6 +1,6 @@
-# Remote Docker on LAN
+# Remote Docker Server
 
-Docker Host
+Setting up Docker on a local server so all computers in LAN can shared
 
 - OS: Ubuntu Server 24.04
 - RAM: 16GB
